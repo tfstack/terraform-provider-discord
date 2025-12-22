@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "davidanson.vscode-markdownlint",
+    "golang.go",
+    "hashicorp.terraform",
+    "Gruntfuggly.todo-tree",
+    "ms-azuretools.vscode-docker",
+    "vscode-icons-team.vscode-icons",
+    "golang.go-nightly",
+    "ms-vscode.makefile-tools"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "todo-tree.tree.scanMode": "workspace only",
+
+  // Go settings
+  "go.useLanguageServer": true,
+  "go.formatTool": "goimports",
+  "go.lintTool": "golangci-lint",
+  "go.lintOnSave": "package",
+  "go.testFlags": ["-v"],
+  "go.testTimeout": "30s",
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "golang.go"
+  },
+  "[go.mod]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "golang.go"
+  },
+
+  // Terraform settings
+  "[terraform]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "[terraform-vars]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "terraform.format.enable": true,
+  "terraform.languageServer.enable": true,
+
+  // File associations
+  "files.associations": {
+    "*.tf": "terraform",
+    "*.tfvars": "terraform-vars",
+    "*.hcl": "hcl"
+  },
+
+  // Editor settings
+  "editor.trimAutoWhitespace": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // Exclude build artifacts from file watcher
+  "files.watcherExclude": {
+    "**/.terraform/**": true,
+    "**/terraform.tfstate*": true,
+    "**/.terraform.lock.hcl": true,
+    "**/vendor/**": true,
+    "**/bin/**": true
+  },
+
+  // Search exclude patterns
+  "search.exclude": {
+    "**/vendor": true,
+    "**/.terraform": true,
+    "**/go.sum": true,
+    "**/terraform.tfstate*": true
+  }
+}

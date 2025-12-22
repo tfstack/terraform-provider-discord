@@ -1,0 +1,38 @@
+# Enable bash history with arrow key navigation
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+export HISTCONTROL=ignoredups:erasedups
+# Append to history file instead of overwriting
+shopt -s histappend
+# Save history after each command
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# Enable arrow key history navigation
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+bind '"\e[C": forward-char'
+bind '"\e[D": backward-char'
+
+# Enable bash completion
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# Enable completion for common commands
+complete -cf sudo
+complete -cf man
+
+# Auto-load .env file if it exists (for Discord bot token and Terraform variables)
+if [ -f /workspaces/terraform-provider-discord/.env ]; then
+    set -a
+    source /workspaces/terraform-provider-discord/.env
+    set +a
+elif [ -f /workspace/.env ]; then
+    set -a
+    source /workspace/.env
+    set +a
+fi

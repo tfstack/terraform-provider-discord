@@ -1,0 +1,46 @@
+{
+  "name": "Terraform Provider Discord Development",
+  "dockerFile": "Dockerfile",
+  "runArgs": ["--init"],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "davidanson.vscode-markdownlint",
+        "golang.go",
+        "hashicorp.terraform",
+        "Gruntfuggly.todo-tree",
+        "ms-azuretools.vscode-docker",
+        "vscode-icons-team.vscode-icons",
+        "ms-vscode.makefile-tools"
+      ],
+      "settings": {
+        "workbench.iconTheme": "vscode-icons",
+        "go.useLanguageServer": true,
+        "go.formatTool": "goimports",
+        "go.lintTool": "golangci-lint",
+        "go.lintOnSave": "package",
+        "[go]": {
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        "[terraform]": {
+          "editor.formatOnSave": true
+        },
+        "terraform.format.enable": true,
+        "terraform.languageServer.enable": true
+      }
+    }
+  },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": ".devcontainer/scripts/postCreate.sh"
+
+  // Connect as root to avoid permission issues (commented out remoteUser means root)
+  // "remoteUser": "vscode"
+}
