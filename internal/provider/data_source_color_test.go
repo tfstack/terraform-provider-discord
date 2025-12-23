@@ -160,7 +160,7 @@ func TestColorDataSource_Read(t *testing.T) {
 	_ = ds
 }
 
-// Helper function to create a test model
+// Helper function to create a test model.
 func createColorModel(hex, rgb string) colorDataSourceModel {
 	model := colorDataSourceModel{}
 	if hex != "" {

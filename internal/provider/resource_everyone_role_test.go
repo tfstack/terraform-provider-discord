@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"context"
 	"testing"
 
 	"github.com/bwmarrin/discordgo"
@@ -16,7 +15,7 @@ func TestEveryoneRoleResource_Metadata(t *testing.T) {
 	}
 	resp := &resource.MetadataResponse{}
 
-	r.Metadata(context.Background(), req, resp)
+	r.Metadata(t.Context(), req, resp)
 
 	assert.Equal(t, "discord_everyone_role", resp.TypeName)
 }
@@ -26,7 +25,7 @@ func TestEveryoneRoleResource_Schema(t *testing.T) {
 	req := resource.SchemaRequest{}
 	resp := &resource.SchemaResponse{}
 
-	r.Schema(context.Background(), req, resp)
+	r.Schema(t.Context(), req, resp)
 
 	assert.NotNil(t, resp.Schema)
 	assert.Contains(t, resp.Schema.Description, "@everyone role")
@@ -80,7 +79,7 @@ func TestEveryoneRoleResource_Configure(t *testing.T) {
 			}
 			resp := &resource.ConfigureResponse{}
 
-			r.Configure(context.Background(), req, resp)
+			r.Configure(t.Context(), req, resp)
 
 			if tt.expectError {
 				assert.True(t, resp.Diagnostics.HasError())

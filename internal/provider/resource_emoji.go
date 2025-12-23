@@ -130,7 +130,7 @@ func (r *emojiResource) Configure(_ context.Context, req resource.ConfigureReque
 	r.client = client
 }
 
-// readImageData reads image data from various sources (base64, file path, or URL)
+// readImageData reads image data from various sources (base64, file path, or URL).
 func (r *emojiResource) readImageData(data *emojiResourceModel) ([]byte, string, error) {
 	// Check image (base64)
 	if !data.Image.IsNull() && !data.Image.IsUnknown() {
@@ -263,7 +263,10 @@ func (r *emojiResource) Create(ctx context.Context, req resource.CreateRequest, 
 	if !data.Roles.IsNull() && !data.Roles.IsUnknown() {
 		roles := make([]string, 0)
 		for _, roleValue := range data.Roles.Elements() {
-			roleStr := roleValue.(types.String)
+			roleStr, ok := roleValue.(types.String)
+			if !ok {
+				continue
+			}
 			roles = append(roles, roleStr.ValueString())
 		}
 		emojiParams.Roles = roles
@@ -489,7 +492,10 @@ func (r *emojiResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	if !plan.Roles.IsNull() && !plan.Roles.IsUnknown() {
 		roles := make([]string, 0)
 		for _, roleValue := range plan.Roles.Elements() {
-			roleStr := roleValue.(types.String)
+			roleStr, ok := roleValue.(types.String)
+			if !ok {
+				continue
+			}
 			roles = append(roles, roleStr.ValueString())
 		}
 		emojiParams.Roles = roles

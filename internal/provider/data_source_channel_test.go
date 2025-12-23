@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"context"
 	"testing"
 
 	"github.com/bwmarrin/discordgo"
@@ -16,7 +15,7 @@ func TestChannelDataSource_Metadata(t *testing.T) {
 	}
 	resp := &datasource.MetadataResponse{}
 
-	ds.Metadata(context.Background(), req, resp)
+	ds.Metadata(t.Context(), req, resp)
 
 	assert.Equal(t, "discord_channel", resp.TypeName)
 }
@@ -26,7 +25,7 @@ func TestChannelDataSource_Schema(t *testing.T) {
 	req := datasource.SchemaRequest{}
 	resp := &datasource.SchemaResponse{}
 
-	ds.Schema(context.Background(), req, resp)
+	ds.Schema(t.Context(), req, resp)
 
 	assert.NotNil(t, resp.Schema)
 	assert.Equal(t, "Retrieves a single Discord channel by its ID.", resp.Schema.Description)
@@ -78,7 +77,7 @@ func TestChannelDataSource_Configure(t *testing.T) {
 			}
 			resp := &datasource.ConfigureResponse{}
 
-			ds.Configure(context.Background(), req, resp)
+			ds.Configure(t.Context(), req, resp)
 
 			if tt.expectError {
 				assert.True(t, resp.Diagnostics.HasError())

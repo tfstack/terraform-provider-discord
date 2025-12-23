@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"context"
 	"testing"
 
 	"github.com/bwmarrin/discordgo"
@@ -16,7 +15,7 @@ func TestCategoryDataSource_Metadata(t *testing.T) {
 	}
 	resp := &datasource.MetadataResponse{}
 
-	ds.Metadata(context.Background(), req, resp)
+	ds.Metadata(t.Context(), req, resp)
 
 	assert.Equal(t, "discord_category", resp.TypeName)
 }
@@ -26,7 +25,7 @@ func TestCategoryDataSource_Schema(t *testing.T) {
 	req := datasource.SchemaRequest{}
 	resp := &datasource.SchemaResponse{}
 
-	ds.Schema(context.Background(), req, resp)
+	ds.Schema(t.Context(), req, resp)
 
 	assert.NotNil(t, resp.Schema)
 	assert.Contains(t, resp.Schema.Description, "Retrieves a Discord category channel")
@@ -86,7 +85,7 @@ func TestCategoryDataSource_Configure(t *testing.T) {
 			}
 			resp := &datasource.ConfigureResponse{}
 
-			d.Configure(context.Background(), req, resp)
+			d.Configure(t.Context(), req, resp)
 
 			if tt.expectError {
 				assert.True(t, resp.Diagnostics.HasError())
