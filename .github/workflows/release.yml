@@ -1,12 +1,13 @@
 # Terraform Provider release workflow.
 name: Release
 
-# This GitHub action creates a release when a tag that matches the pattern
-# "v*" (e.g. v0.1.0) is created.
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_run:
+    workflows: ["Terraform Tag"]
+    types:
+      - completed
+    branches:
+      - main
 
 # Releases need permissions to read and write the repository contents.
 # GitHub considers creating releases and uploading assets as writing contents.
@@ -15,12 +16,15 @@ permissions:
 
 jobs:
   goreleaser:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           # Allow goreleaser to access older tag information.
           fetch-depth: 0
+          # Checkout the commit from the triggering workflow run
+          ref: ${{ github.event.workflow_run.head_sha }}
       - uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
         with:
           go-version-file: 'go.mod'
