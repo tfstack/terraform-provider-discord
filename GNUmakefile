@@ -43,11 +43,6 @@ testacc:
 	@echo "==> Running acceptance tests..."
 	TF_ACC=1 go test -v ./...
 
-# Run end-to-end tests
-test-e2e: install-local
-	@echo "==> Running end-to-end tests..."
-	./scripts/test-e2e.sh
-
 # Format code
 fmt:
 	@echo "==> Formatting code..."
