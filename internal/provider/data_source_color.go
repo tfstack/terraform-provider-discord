@@ -131,7 +131,7 @@ func (d *colorDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 }
 
 // hexToDecimal converts a hex color string to decimal integer.
-// Supports formats: "#RRGGBB", "RRGGBB", "#RGB", "RGB"
+// Supports formats: "#RRGGBB", "RRGGBB", "#RGB", "RGB".
 func hexToDecimal(hex string) (int64, error) {
 	// Remove leading # if present
 	hex = strings.TrimPrefix(hex, "#")
@@ -166,7 +166,7 @@ func hexToDecimal(hex string) (int64, error) {
 }
 
 // rgbToDecimal converts an RGB color string to decimal integer.
-// Supports format: "rgb(R, G, B)" or "rgb(R,G,B)"
+// Supports format: "rgb(R, G, B)" or "rgb(R,G,B)".
 func rgbToDecimal(rgb string) (int64, error) {
 	// Match RGB format: rgb(R, G, B) or rgb(R,G,B)
 	rgbRegex := regexp.MustCompile(`^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$`)

@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"context"
 	"testing"
 
 	"github.com/bwmarrin/discordgo"
@@ -16,7 +15,7 @@ func TestRoleDataSource_Metadata(t *testing.T) {
 	}
 	resp := &datasource.MetadataResponse{}
 
-	d.Metadata(context.Background(), req, resp)
+	d.Metadata(t.Context(), req, resp)
 
 	assert.Equal(t, "discord_role", resp.TypeName)
 }
@@ -26,7 +25,7 @@ func TestRoleDataSource_Schema(t *testing.T) {
 	req := datasource.SchemaRequest{}
 	resp := &datasource.SchemaResponse{}
 
-	d.Schema(context.Background(), req, resp)
+	d.Schema(t.Context(), req, resp)
 
 	assert.NotNil(t, resp.Schema)
 	assert.Contains(t, resp.Schema.Description, "Retrieves a Discord role")
@@ -79,7 +78,7 @@ func TestRoleDataSource_Configure(t *testing.T) {
 			}
 			resp := &datasource.ConfigureResponse{}
 
-			d.Configure(context.Background(), req, resp)
+			d.Configure(t.Context(), req, resp)
 
 			if tt.expectError {
 				assert.True(t, resp.Diagnostics.HasError())

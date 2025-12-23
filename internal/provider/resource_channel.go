@@ -35,7 +35,7 @@ func NewChannelResource() resource.Resource {
 	return &channelResource{}
 }
 
-// channelTypeFromString converts a string channel type to discordgo.ChannelType
+// channelTypeFromString converts a string channel type to discordgo.ChannelType.
 func channelTypeFromString(typeStr string) (discordgo.ChannelType, error) {
 	switch typeStr {
 	case "text", "":
@@ -61,7 +61,7 @@ func channelTypeFromString(typeStr string) (discordgo.ChannelType, error) {
 	}
 }
 
-// channelTypeToString converts discordgo.ChannelType to a string
+// channelTypeToString converts discordgo.ChannelType to a string.
 func channelTypeToString(channelType discordgo.ChannelType) string {
 	switch channelType {
 	case discordgo.ChannelTypeGuildText:

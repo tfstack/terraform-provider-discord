@@ -261,8 +261,8 @@ func (r *channelPermissionResource) Create(ctx context.Context, req resource.Cre
 	data.ChannelID = types.StringValue(channelID)
 	data.Type = types.StringValue(typeStr)
 	data.OverwriteID = types.StringValue(overwriteID)
-	data.Allow = types.Int64Value(int64(finalOverwrite.Allow))
-	data.Deny = types.Int64Value(int64(finalOverwrite.Deny))
+	data.Allow = types.Int64Value(finalOverwrite.Allow)
+	data.Deny = types.Int64Value(finalOverwrite.Deny)
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -344,8 +344,8 @@ func (r *channelPermissionResource) Read(ctx context.Context, req resource.ReadR
 	data.ChannelID = types.StringValue(channelID)
 	data.Type = types.StringValue(typeStr)
 	data.OverwriteID = types.StringValue(overwriteID)
-	data.Allow = types.Int64Value(int64(overwrite.Allow))
-	data.Deny = types.Int64Value(int64(overwrite.Deny))
+	data.Allow = types.Int64Value(overwrite.Allow)
+	data.Deny = types.Int64Value(overwrite.Deny)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -485,8 +485,8 @@ func (r *channelPermissionResource) Update(ctx context.Context, req resource.Upd
 		plan.ChannelID = types.StringValue(channelID)
 		plan.Type = types.StringValue(typeStr)
 		plan.OverwriteID = types.StringValue(overwriteID)
-		plan.Allow = types.Int64Value(int64(finalOverwrite.Allow))
-		plan.Deny = types.Int64Value(int64(finalOverwrite.Deny))
+		plan.Allow = types.Int64Value(finalOverwrite.Allow)
+		plan.Deny = types.Int64Value(finalOverwrite.Deny)
 	}
 
 	// Save updated data into Terraform state
@@ -562,7 +562,7 @@ func (r *channelPermissionResource) Delete(ctx context.Context, req resource.Del
 }
 
 // ImportState imports an existing resource into Terraform state.
-// Import ID format: channel_id:overwrite_id:type (e.g., "123456789012345678:987654321098765432:role")
+// Import ID format: channel_id:overwrite_id:type (e.g., "123456789012345678:987654321098765432:role").
 func (r *channelPermissionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	// Parse the import ID: format is "channel_id:overwrite_id:type"
 	importID := req.ID
@@ -664,8 +664,8 @@ func (r *channelPermissionResource) ImportState(ctx context.Context, req resourc
 	data.ChannelID = types.StringValue(channelID)
 	data.Type = types.StringValue(typeStr)
 	data.OverwriteID = types.StringValue(overwriteID)
-	data.Allow = types.Int64Value(int64(overwrite.Allow))
-	data.Deny = types.Int64Value(int64(overwrite.Deny))
+	data.Allow = types.Int64Value(overwrite.Allow)
+	data.Deny = types.Int64Value(overwrite.Deny)
 
 	// Save the imported state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
