@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -518,15 +519,10 @@ func (r *roleResource) ImportState(ctx context.Context, req resource.ImportState
 		return
 	}
 
-	// Try to parse as guild_id:role_id format
-	var guildID, roleID string
-	if len(importID) > 18 && importID[18] == ':' {
-		// Format: guild_id:role_id
-		guildID = importID[:18]
-		roleID = importID[19:]
-	} else {
-		// Fallback: assume it's just role_id, but we need guild_id
-		// For now, require the format guild_id:role_id
+	// Discord snowflakes are variable length (~17–19 digits); split on ':' rather
+	// than assuming an 18-character guild ID.
+	guildID, roleID, ok := parseGuildRoleImportID(importID)
+	if !ok {
 		resp.Diagnostics.AddError(
 			"Invalid Import ID Format",
 			"Import ID must be in the format 'guild_id:role_id'. Example: '123456789012345678:987654321098765432'. Note: Use discord_everyone_role resource for @everyone role.",
@@ -585,4 +581,14 @@ func (r *roleResource) ImportState(ctx context.Context, req resource.ImportState
 
 	// Save the imported state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+// parseGuildRoleImportID parses "guild_id:role_id" import IDs. Snowflake IDs are
+// variable length, so this splits on the first ':' instead of a fixed offset.
+func parseGuildRoleImportID(importID string) (guildID, roleID string, ok bool) {
+	parts := strings.SplitN(importID, ":", 2)
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", false
+	}
+	return parts[0], parts[1], true
 }
