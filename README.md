@@ -272,13 +272,13 @@ go build -o terraform-provider-discord -buildvcs=false
 
 Install the provider to Terraform's local plugin directory so Terraform can find it:
 
-**Option A: Using Make (Recommended)**
+#### Option A: Using Make (Recommended)
 
 ```bash
 make install-local
 ```
 
-**Option B: Manual installation**
+#### Option B: Manual installation
 
 ```bash
 # Create the plugin directory structure
@@ -292,7 +292,7 @@ cp terraform-provider-discord ~/.terraform.d/plugins/registry.terraform.io/tfsta
 
 ### 3. Initialize Examples (Automated)
 
-**Option A: Initialize all examples automatically**
+#### Option A: Initialize all examples automatically
 
 ```bash
 make init-examples
@@ -304,13 +304,13 @@ This will:
 - Initialize Terraform in all example directories
 - Skip examples that require variables (you'll need to set those manually)
 
-**Option B: Initialize a specific example**
+#### Option B: Initialize a specific example
 
 ```bash
 make init-example EXAMPLE=examples/data-sources/discord_channels
 ```
 
-**Option C: Manual initialization**
+#### Option C: Manual initialization
 
 Navigate to the example directory and initialize manually:
 
@@ -361,7 +361,7 @@ go test -v ./...
 
 Generate a test coverage report:
 
-**Option A: Using Make (Recommended)**
+#### Option A: Using Make (Recommended)
 
 ```bash
 make test-coverage
@@ -373,7 +373,7 @@ This will:
 - Display coverage summary in the terminal
 - Generate an HTML coverage report (`coverage.html`)
 
-**Option B: Manual commands**
+#### Option B: Manual commands
 
 ```bash
 # Generate coverage profile
