@@ -185,6 +185,11 @@ func (r *serverResource) Read(ctx context.Context, req resource.ReadRequest, res
 	// Fetch the server by ID
 	guild, err := r.client.Guild(serverID)
 	if err != nil {
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
 		resp.Diagnostics.AddError(
 			"Error Fetching Server",
 			fmt.Sprintf("Unable to fetch server %s: %s", serverID, err.Error()),

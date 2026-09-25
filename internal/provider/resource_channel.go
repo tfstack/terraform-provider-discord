@@ -369,6 +369,11 @@ func (r *channelResource) Read(ctx context.Context, req resource.ReadRequest, re
 	// Fetch the channel
 	channel, err := r.client.Channel(channelID)
 	if err != nil {
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
 		resp.Diagnostics.AddError(
 			"Error Fetching Channel",
 			fmt.Sprintf("Unable to fetch channel %s: %s", channelID, err.Error()),

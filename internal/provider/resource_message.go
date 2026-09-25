@@ -266,12 +266,15 @@ func (r *messageResource) Read(ctx context.Context, req resource.ReadRequest, re
 	// Fetch the message
 	message, err := r.client.ChannelMessage(channelID, messageID)
 	if err != nil {
-		// If message doesn't exist, mark as removed
-		resp.Diagnostics.AddWarning(
-			"Message Not Found",
-			fmt.Sprintf("Message %s was not found in channel %s. It may have been deleted. Removing from state.", messageID, channelID),
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
+		resp.Diagnostics.AddError(
+			"Error Fetching Message",
+			fmt.Sprintf("Unable to fetch message %s in channel %s: %s", messageID, channelID, err.Error()),
 		)
-		resp.State.RemoveResource(ctx)
 		return
 	}
 

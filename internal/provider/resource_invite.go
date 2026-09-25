@@ -298,12 +298,15 @@ func (r *inviteResource) Read(ctx context.Context, req resource.ReadRequest, res
 	// Fetch the invite with additional metadata
 	invite, err := r.client.InviteWithCounts(code)
 	if err != nil {
-		// If invite doesn't exist or was deleted, mark as removed
-		resp.Diagnostics.AddWarning(
-			"Invite Not Found",
-			fmt.Sprintf("Invite %s was not found. It may have been deleted or expired. Removing from state.", code),
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
+		resp.Diagnostics.AddError(
+			"Error Fetching Invite",
+			fmt.Sprintf("Unable to fetch invite %s: %s", code, err.Error()),
 		)
-		resp.State.RemoveResource(ctx)
 		return
 	}
 

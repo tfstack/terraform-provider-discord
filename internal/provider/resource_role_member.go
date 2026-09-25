@@ -180,12 +180,15 @@ func (r *roleMemberResource) Read(ctx context.Context, req resource.ReadRequest,
 	// Fetch the guild member to check if they have the role
 	member, err := r.client.GuildMember(guildID, userID)
 	if err != nil {
-		// If member doesn't exist or is not in the guild, mark as removed
-		resp.Diagnostics.AddWarning(
-			"Member Not Found",
-			fmt.Sprintf("Member %s was not found in guild %s. They may have left the server. Removing from state.", userID, guildID),
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
+		resp.Diagnostics.AddError(
+			"Error Fetching Member",
+			fmt.Sprintf("Unable to fetch member %s in guild %s: %s", userID, guildID, err.Error()),
 		)
-		resp.State.RemoveResource(ctx)
 		return
 	}
 

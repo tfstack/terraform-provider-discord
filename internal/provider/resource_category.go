@@ -237,6 +237,11 @@ func (r *categoryResource) Read(ctx context.Context, req resource.ReadRequest, r
 	// Fetch the channel
 	channel, err := r.client.Channel(categoryID)
 	if err != nil {
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
 		resp.Diagnostics.AddError(
 			"Error Fetching Category",
 			fmt.Sprintf("Unable to fetch category %s: %s", categoryID, err.Error()),

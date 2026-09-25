@@ -272,12 +272,15 @@ func (r *webhookResource) Read(ctx context.Context, req resource.ReadRequest, re
 	// Fetch the webhook
 	webhook, err := r.client.Webhook(webhookID)
 	if err != nil {
-		// If webhook doesn't exist, mark as removed
-		resp.Diagnostics.AddWarning(
-			"Webhook Not Found",
-			fmt.Sprintf("Webhook %s was not found. It may have been deleted. Removing from state.", webhookID),
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
+		resp.Diagnostics.AddError(
+			"Error Fetching Webhook",
+			fmt.Sprintf("Unable to fetch webhook %s: %s", webhookID, err.Error()),
 		)
-		resp.State.RemoveResource(ctx)
 		return
 	}
 

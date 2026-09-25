@@ -287,6 +287,11 @@ func (r *roleResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	// Fetch all roles and find the one with matching ID
 	roles, err := r.client.GuildRoles(guildID)
 	if err != nil {
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
 		resp.Diagnostics.AddError(
 			"Error Fetching Roles",
 			fmt.Sprintf("Unable to fetch roles for guild %s: %s", guildID, err.Error()),
@@ -305,10 +310,7 @@ func (r *roleResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	}
 
 	if !found {
-		resp.Diagnostics.AddError(
-			"Role Not Found",
-			fmt.Sprintf("Role with ID %s not found in guild %s. The role may have been deleted.", roleID, guildID),
-		)
+		resp.State.RemoveResource(ctx)
 		return
 	}
 

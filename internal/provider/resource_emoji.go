@@ -384,12 +384,15 @@ func (r *emojiResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	// Fetch the emoji
 	emoji, err := r.client.GuildEmoji(guildID, emojiID)
 	if err != nil {
-		// If emoji doesn't exist, mark as removed
-		resp.Diagnostics.AddWarning(
-			"Emoji Not Found",
-			fmt.Sprintf("Emoji %s was not found in guild %s. It may have been deleted. Removing from state.", emojiID, guildID),
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
+		resp.Diagnostics.AddError(
+			"Error Fetching Emoji",
+			fmt.Sprintf("Unable to fetch emoji %s in guild %s: %s", emojiID, guildID, err.Error()),
 		)
-		resp.State.RemoveResource(ctx)
 		return
 	}
 

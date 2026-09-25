@@ -291,6 +291,11 @@ func (r *everyoneRoleResource) Read(ctx context.Context, req resource.ReadReques
 	// Fetch all roles and find the @everyone role
 	roles, err := r.client.GuildRoles(guildID)
 	if err != nil {
+		if IsDiscordNotFound(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
 		resp.Diagnostics.AddError(
 			"Error Fetching Roles",
 			fmt.Sprintf("Unable to fetch roles for guild %s: %s", guildID, err.Error()),
